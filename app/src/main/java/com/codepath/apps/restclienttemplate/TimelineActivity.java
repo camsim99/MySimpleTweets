@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,8 @@ public class TimelineActivity extends AppCompatActivity {
 
     TwitterClient client;
     TweetAdapter tweetAdapter;
+    private SwipeRefreshLayout swipeContainer;
+
 
     ArrayList<Tweet> tweets;
     // Normally this data should be encapsulated in ViewModels, but shown here for simplicity
@@ -93,7 +96,35 @@ public class TimelineActivity extends AppCompatActivity {
        rvTweets.addOnScrollListener(scrollListener);
 
         populateTimeline();
+
+       // Lookup the swipe container view
+       swipeContainer = findViewById(R.id.swipeContainer);
+       // Setup refresh listener which triggers new data loading
+       swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+           @Override
+           public void onRefresh() {
+               // Your code to refresh the list here.
+               // Make sure you call swipeContainer.setRefreshing(false)
+               // once the network request has completed successfully.
+               fetchTimelineAsync(0);
+           }
+       });
+       // Configure the refreshing colors
+       swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+               android.R.color.holo_green_light,
+               android.R.color.holo_orange_light,
+               android.R.color.holo_red_light);
+   }
+
+    public void fetchTimelineAsync(int page) {
+        // Send the network request to fetch the updated data
+        // `client` here is an instance of Android Async HTTP
+        // getHomeTimeline is an example endpoint.
+        tweetAdapter.clear();
+        populateTimeline();
+        swipeContainer.setRefreshing(false);
     }
+
 
 
     //populates the toolbar
