@@ -31,7 +31,7 @@ public class TimelineActivity extends AppCompatActivity {
     // Normally this data should be encapsulated in ViewModels, but shown here for simplicity
     private EndlessRecyclerViewScrollListener scrollListener;
     RecyclerView rvTweets;
-    Long max_id; //the lowest id seen
+    Long max_id=0L; //the lowest id seen
 
     private final int REQUEST_CODE = 20;
 
@@ -93,7 +93,6 @@ public class TimelineActivity extends AppCompatActivity {
        rvTweets.addOnScrollListener(scrollListener);
 
         populateTimeline();
-
     }
 
 
@@ -150,9 +149,11 @@ public class TimelineActivity extends AppCompatActivity {
                     //notify the adapter that we've added an item
                     try {
                         Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-                        tweets.add(tweet);
-                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
-                        max_id = tweet.getPostId();
+                        if (max_id==0L || tweet.getPostId() < max_id) {
+                            tweets.add(tweet);
+                            tweetAdapter.notifyItemInserted(tweets.size() - 1);
+                            max_id = tweet.getPostId();
+                        }
                     }
                     catch (JSONException e){
                         e.printStackTrace();

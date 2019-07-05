@@ -50,15 +50,16 @@ public class TwitterClient extends OAuthBaseClient {
 				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(R.string.intent_host),
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
-	//TODO added maxID here
 	//// DEFINE METHODS for different API endpoints here
 	public void getHomeTimeline(Long maxId, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
-		params.put("max_id", maxId); //setting as 1 does not have an effect...helping to get back newer tweets
-		client.get(apiUrl, params, handler);
+		if(maxId!=0L) {
+			params.put("max_id", maxId - 1); //the max_id on the page (you add -1 so that you do not get duplicate posts on the bottom
+		}
+			client.get(apiUrl, params, handler);
 	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

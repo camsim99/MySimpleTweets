@@ -14,6 +14,8 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     private List<Tweet> mTweets;
@@ -48,8 +50,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         //populate the views according to this data
         viewHolder.tvUsername.setText(tweet.user.name);
         viewHolder.tvBody.setText(tweet.body);
+        viewHolder.handle.setText("@"+tweet.user.screenName);
+        viewHolder.likes.setText(Integer.toString(tweet.likes));
+        viewHolder.retweets.setText(Integer.toString(tweet.retweets));
 
-        Glide.with(context).load(tweet.user.profileImageUrl).into(viewHolder.ivProfileImage);
+        int radius = 150;
+        int margin = 0;
+
+        Glide.with(context).load(tweet.user.profileImageUrl).bitmapTransform(new RoundedCornersTransformation(context, radius, margin)).into(viewHolder.ivProfileImage);
     }
 
 
@@ -59,6 +67,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
+        public TextView handle;
+        public TextView likes;
+        public TextView retweets;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -67,6 +78,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvBody=itemView.findViewById(R.id.tvBody);
+            handle=itemView.findViewById(R.id.handle);
+            likes = itemView.findViewById(R.id.likes);
+            retweets=itemView.findViewById(R.id.retweets);
         }
     }
 
