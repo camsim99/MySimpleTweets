@@ -54,10 +54,18 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         viewHolder.likes.setText(Integer.toString(tweet.likes));
         viewHolder.retweets.setText(Integer.toString(tweet.retweets));
 
+        if(tweet.media!=""){
+            Glide.with(context).load(tweet.media).into(viewHolder.media);
+        }
+        else {
+            viewHolder.media.setVisibility(View.GONE);
+        }
+
         int radius = 150;
         int margin = 0;
 
         Glide.with(context).load(tweet.user.profileImageUrl).bitmapTransform(new RoundedCornersTransformation(context, radius, margin)).into(viewHolder.ivProfileImage);
+
     }
 
 
@@ -70,6 +78,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public TextView handle;
         public TextView likes;
         public TextView retweets;
+        public ImageView media;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -81,12 +90,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             handle=itemView.findViewById(R.id.handle);
             likes = itemView.findViewById(R.id.likes);
             retweets=itemView.findViewById(R.id.retweets);
+            media=itemView.findViewById(R.id.media);
         }
     }
 
     @Override
     public int getItemCount() {
         return mTweets.size();
+    }
+
+    // Clean all elements of the recycler
+    public void clear() {
+        mTweets.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items -- change to type used
+    public void addAll(List<Tweet> list) {
+        mTweets.addAll(list);
+        notifyDataSetChanged();
     }
 
 }

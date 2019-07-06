@@ -106,7 +106,7 @@ public class TimelineActivity extends AppCompatActivity {
                // Your code to refresh the list here.
                // Make sure you call swipeContainer.setRefreshing(false)
                // once the network request has completed successfully.
-               fetchTimelineAsync(0);
+               fetchTimelineAsync();
            }
        });
        // Configure the refreshing colors
@@ -116,7 +116,7 @@ public class TimelineActivity extends AppCompatActivity {
                android.R.color.holo_red_light);
    }
 
-    public void fetchTimelineAsync(int page) {
+    public void fetchTimelineAsync() {
         // Send the network request to fetch the updated data
         // `client` here is an instance of Android Async HTTP
         // getHomeTimeline is an example endpoint.
