@@ -85,6 +85,7 @@ public class ComposeActivity extends AppCompatActivity {
                 //construct a new tweet
                 try {
                     Tweet tweet = Tweet.fromJSON(response);
+                    //whenever you want to pass something from activity A to activity B, you want to use Intent extras
                     i.putExtra("currTweet", Parcels.wrap(tweet));
                     //start the activity
                     startActivity(i);
