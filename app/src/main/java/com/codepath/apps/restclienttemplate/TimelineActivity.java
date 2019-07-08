@@ -128,6 +128,8 @@ public class TimelineActivity extends AppCompatActivity {
 
 
     //populates the toolbar
+    //references the menu file itself
+    //onPrepareOptionsMenu actually called before this then created then we deal with what happens when an icon is clicked (see below)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.compose, menu);
